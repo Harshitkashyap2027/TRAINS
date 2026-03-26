@@ -1,0 +1,462 @@
+/* ============================================================
+   AETHER — Theme System (Light / Dark / Accessibility)
+   ============================================================ */
+
+/* ── Smooth theme transitions ───────────────────────────────── */
+*,
+*::before,
+*::after {
+  transition:
+    background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Override for elements that should NOT have the global theme transition */
+button,
+a,
+.btn,
+.sidebar-item,
+.bottom-nav-item,
+.glass-interactive,
+.hover-lift,
+.hover-scale,
+.bento-item,
+input,
+textarea,
+.spinner,
+.transition-fast {
+  transition-duration: 0.15s;
+}
+
+/* ── Light Theme Overrides ──────────────────────────────────── */
+[data-theme="light"] .sidebar {
+  background: #ffffff;
+  border-right-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .sidebar-item {
+  color: rgba(10, 10, 15, 0.65);
+}
+
+[data-theme="light"] .sidebar-item:hover {
+  background: rgba(124, 58, 237, 0.07);
+  color: var(--accent-purple);
+}
+
+[data-theme="light"] .sidebar-item.active {
+  background: rgba(124, 58, 237, 0.1);
+  color: var(--accent-purple);
+}
+
+[data-theme="light"] .sidebar-section-label {
+  color: rgba(10, 10, 15, 0.35);
+}
+
+[data-theme="light"] .topbar {
+  background: rgba(248, 249, 254, 0.85);
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 16px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .topbar-icon-btn {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: rgba(10, 10, 15, 0.6);
+}
+
+[data-theme="light"] .topbar-icon-btn:hover {
+  background: rgba(0, 0, 0, 0.07);
+  color: var(--text-primary);
+  border-color: rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="light"] .bottom-nav {
+  background: rgba(255, 255, 255, 0.92);
+  border-top-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .bottom-nav-item {
+  color: rgba(10, 10, 15, 0.4);
+}
+
+[data-theme="light"] .bottom-nav-item.active {
+  color: var(--accent-purple);
+}
+
+[data-theme="light"] .glass {
+  background: rgba(255, 255, 255, 0.65);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .glass-strong {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="light"] .glass-dark {
+  background: rgba(10, 10, 15, 0.08);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .glass-card {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .glass-card:hover {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(124, 58, 237, 0.2);
+}
+
+[data-theme="light"] .bento-item {
+  background: rgba(255, 255, 255, 0.75);
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .bento-item:hover {
+  background: #ffffff;
+  border-color: rgba(124, 58, 237, 0.2);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .bento-stat,
+[data-theme="light"] .bento-chart,
+[data-theme="light"] .bento-profile,
+[data-theme="light"] .bento-activity,
+[data-theme="light"] .bento-trending {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .post-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .post-card:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.09);
+}
+
+[data-theme="light"] .btn-secondary {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: rgba(10, 10, 15, 0.75);
+}
+
+[data-theme="light"] .btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.16);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .btn-ghost {
+  color: rgba(10, 10, 15, 0.65);
+}
+
+[data-theme="light"] .btn-ghost:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .input-field {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .input-field:focus {
+  border-color: var(--accent-purple);
+  background: #fff;
+}
+
+[data-theme="light"] .input-field::placeholder {
+  color: rgba(10, 10, 15, 0.35);
+}
+
+[data-theme="light"] .chat-item {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .chat-item:hover {
+  background: rgba(124, 58, 237, 0.04);
+}
+
+[data-theme="light"] .message-received {
+  background: #f0f2ff;
+  color: var(--text-primary);
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .message-sent {
+  background: var(--accent-purple);
+}
+
+[data-theme="light"] .modal-container {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .modal-header,
+[data-theme="light"] .modal-footer {
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .toast {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="light"] .notif-item {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .notif-item:hover {
+  background: rgba(124, 58, 237, 0.04);
+}
+
+[data-theme="light"] .notif-unread {
+  background: rgba(124, 58, 237, 0.05);
+}
+
+[data-theme="light"] .project-card {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.07);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.04) 25%,
+    rgba(0, 0, 0, 0.08) 50%,
+    rgba(0, 0, 0, 0.04) 75%
+  );
+  background-size: 200% 100%;
+}
+
+[data-theme="light"] .skeleton-text,
+[data-theme="light"] .skeleton-circle {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.05) 25%,
+    rgba(0, 0, 0, 0.1) 50%,
+    rgba(0, 0, 0, 0.05) 75%
+  );
+  background-size: 200% 100%;
+}
+
+[data-theme="light"] .auth-layout {
+  background: linear-gradient(135deg, #f0f2ff 0%, #faf5ff 50%, #e0f7fa 100%);
+}
+
+[data-theme="light"] .auth-card {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .profile-cover {
+  filter: brightness(0.95);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: rgba(124, 58, 237, 0.35);
+}
+
+[data-theme="light"] * {
+  scrollbar-color: rgba(124, 58, 237, 0.35) transparent;
+}
+
+/* ── Mobile Theme Adjustments ───────────────────────────────── */
+@media (max-width: 767px) {
+  [data-theme="light"] .topbar {
+    background: rgba(255, 255, 255, 0.95);
+  }
+
+  [data-theme="light"] .auth-card {
+    border-radius: var(--radius-lg);
+    padding: 2rem 1.5rem;
+  }
+}
+
+/* ── High Contrast Mode ─────────────────────────────────────── */
+@media (prefers-contrast: high) {
+  :root {
+    --border-color: rgba(255, 255, 255, 0.3);
+    --text-secondary: rgba(255, 255, 255, 0.9);
+    --text-muted: rgba(255, 255, 255, 0.7);
+  }
+
+  [data-theme="light"] {
+    --border-color: rgba(0, 0, 0, 0.3);
+    --text-secondary: rgba(10, 10, 15, 0.9);
+    --text-muted: rgba(10, 10, 15, 0.7);
+  }
+
+  .btn-primary {
+    outline: 2px solid transparent;
+  }
+
+  .btn-primary:focus-visible {
+    outline: 3px solid var(--accent-purple-light);
+    outline-offset: 2px;
+  }
+
+  .glass,
+  .glass-strong,
+  .glass-card {
+    border-width: 2px;
+  }
+
+  .bento-item {
+    border-width: 2px;
+  }
+
+  .input-field {
+    border-width: 2px;
+  }
+
+  .badge {
+    border-width: 2px;
+  }
+}
+
+/* ── Reduced Motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-pulse,
+  .animate-pulse-soft,
+  .animate-bounce,
+  .animate-spin,
+  .animate-spin-slow,
+  .animate-gradient,
+  .animate-glow,
+  .shimmer::after,
+  .skeleton,
+  .skeleton-text,
+  .skeleton-circle,
+  .gradient-border-animated::before {
+    animation: none !important;
+  }
+
+  .hover-lift:hover,
+  .hover-scale:hover,
+  .bento-item:hover,
+  .bento-stat:hover,
+  .bento-chart:hover,
+  .bento-profile:hover,
+  .bento-activity:hover,
+  .bento-trending:hover,
+  .post-card:hover,
+  .project-card:hover {
+    transform: none !important;
+  }
+
+  .page-enter,
+  .page-enter-active,
+  .page-exit,
+  .page-exit-active {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── Print styles ───────────────────────────────────────────── */
+@media print {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f5f5f5;
+    --text-primary: #000000;
+    --text-secondary: #333333;
+    --text-muted: #666666;
+    --border-color: #cccccc;
+  }
+
+  .sidebar,
+  .topbar,
+  .bottom-nav,
+  .toast-container,
+  .modal-overlay,
+  .btn:not(.btn-print),
+  .sidebar-overlay {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+  }
+
+  .page-wrapper {
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .post-card,
+  .project-card,
+  .bento-item,
+  .bento-stat,
+  .glass-card {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  a {
+    color: var(--accent-purple) !important;
+    text-decoration: underline;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  .bento-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}
+
+/* ── Color scheme media query fallback ──────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+  }
+}

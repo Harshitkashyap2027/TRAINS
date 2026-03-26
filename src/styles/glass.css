@@ -1,0 +1,345 @@
+/* ============================================================
+   AETHER — Glassmorphism & Neumorphism Styles
+   ============================================================ */
+
+/* ── Core Glass ─────────────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glass-strong {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.glass-subtle {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-dark {
+  background: rgba(10, 10, 15, 0.7);
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.glass-purple {
+  background: rgba(124, 58, 237, 0.1);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid rgba(124, 58, 237, 0.25);
+}
+
+.glass-cyan {
+  background: rgba(6, 182, 212, 0.08);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+/* ── Glass Card ─────────────────────────────────────────────── */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  transition: background var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: var(--shadow-md);
+}
+
+.glass-card-lg {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: var(--blur-md);
+  -webkit-backdrop-filter: var(--blur-md);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+}
+
+/* ── Frosted Glass ──────────────────────────────────────────── */
+.frosted {
+  background: rgba(19, 19, 26, 0.65);
+  backdrop-filter: saturate(180%) var(--blur-lg);
+  -webkit-backdrop-filter: saturate(180%) var(--blur-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.frosted-light {
+  background: rgba(248, 249, 254, 0.7);
+  backdrop-filter: saturate(200%) var(--blur-lg);
+  -webkit-backdrop-filter: saturate(200%) var(--blur-lg);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--text-primary);
+}
+
+/* ── Neumorphism ────────────────────────────────────────────── */
+.neu-card {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow:
+    6px 6px 18px rgba(0, 0, 0, 0.45),
+    -4px -4px 12px rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  padding: 1.25rem;
+}
+
+.neu-card-inset {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  box-shadow:
+    inset 4px 4px 12px rgba(0, 0, 0, 0.4),
+    inset -3px -3px 8px rgba(255, 255, 255, 0.03);
+  padding: 1.25rem;
+}
+
+.neu-button {
+  background: var(--bg-secondary);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    4px 4px 12px rgba(0, 0, 0, 0.4),
+    -2px -2px 8px rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.6rem 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.neu-button:hover {
+  box-shadow:
+    6px 6px 16px rgba(0, 0, 0, 0.5),
+    -3px -3px 10px rgba(255, 255, 255, 0.05);
+}
+
+.neu-button:active {
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.03);
+  transform: scale(0.98);
+}
+
+.neu-input {
+  background: var(--bg-primary);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0.65rem 1rem;
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  width: 100%;
+  transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.neu-input:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.5);
+  box-shadow:
+    inset 3px 3px 8px rgba(0, 0, 0, 0.4),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.03),
+    0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+/* ── Glow Effects ───────────────────────────────────────────── */
+.glow {
+  box-shadow: var(--shadow-glow);
+}
+
+.glow-sm {
+  box-shadow: 0 0 10px rgba(124, 58, 237, 0.25);
+}
+
+.glow-lg {
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.4), 0 0 80px rgba(124, 58, 237, 0.15);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
+}
+
+.glow-cyan-lg {
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.4), 0 0 80px rgba(6, 182, 212, 0.15);
+}
+
+.glow-green {
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+.glow-red {
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+.glow-text {
+  text-shadow: 0 0 20px rgba(124, 58, 237, 0.6), 0 0 40px rgba(124, 58, 237, 0.3);
+}
+
+.glow-text-cyan {
+  text-shadow: 0 0 20px rgba(6, 182, 212, 0.6), 0 0 40px rgba(6, 182, 212, 0.3);
+}
+
+/* ── Gradient Border ────────────────────────────────────────── */
+.gradient-border {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: var(--gradient-primary);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.gradient-border-animated::before {
+  background: linear-gradient(135deg, #7c3aed, #06b6d4, #10b981, #7c3aed);
+  background-size: 300% 300%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.gradient-border-thin {
+  position: relative;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+}
+
+.gradient-border-thin::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.6), rgba(6, 182, 212, 0.6));
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Shimmer Effect ─────────────────────────────────────────── */
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.07) 50%,
+    transparent 60%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* ── Inner glow overlay ─────────────────────────────────────── */
+.inner-glow {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* ── Surface layers ─────────────────────────────────────────── */
+.surface-1 {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.surface-2 {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.surface-raised {
+  background: var(--bg-card);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ── Interactive glass ──────────────────────────────────────── */
+.glass-interactive {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: var(--blur-sm);
+  -webkit-backdrop-filter: var(--blur-sm);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.glass-interactive:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(124, 58, 237, 0.3);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.12);
+}
+
+.glass-interactive:active {
+  background: rgba(124, 58, 237, 0.1);
+  transform: scale(0.98);
+}
+
+/* ── Blur overlay ───────────────────────────────────────────── */
+.blur-overlay {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: var(--blur-lg);
+  -webkit-backdrop-filter: var(--blur-lg);
+  background: rgba(10, 10, 15, 0.5);
+  z-index: 1;
+}
+
+/* ── Gradient overlays ──────────────────────────────────────── */
+.gradient-overlay-bottom {
+  background: linear-gradient(to top, var(--bg-primary) 0%, transparent 100%);
+}
+
+.gradient-overlay-top {
+  background: linear-gradient(to bottom, var(--bg-primary) 0%, transparent 100%);
+}
+
+.gradient-overlay-card {
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.08) 0%, rgba(6, 182, 212, 0.08) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}

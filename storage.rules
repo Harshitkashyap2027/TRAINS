@@ -1,0 +1,120 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ─── Helper functions ─────────────────────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isFileSizeWithin(maxMB) {
+      return request.resource.size <= maxMB * 1024 * 1024;
+    }
+
+    function isImageContentType() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isVideoContentType() {
+      return request.resource.contentType.matches('video/.*');
+    }
+
+    function isImageOrVideoContentType() {
+      return isImageContentType() || isVideoContentType();
+    }
+
+    // Checks whether the requesting user is a participant in the given chat.
+    // We store participant UIDs as a comma-separated metadata field to avoid
+    // Firestore lookups (which are not supported in Storage rules).
+    function isChatParticipant(chatId) {
+      return isAuthenticated() &&
+        request.auth.uid in resource.metadata.participants.split(',');
+    }
+
+    function isChatParticipantUpload(chatId) {
+      return isAuthenticated() &&
+        request.auth.uid in request.resource.metadata.participants.split(',');
+    }
+
+    // ─── User Avatars ─────────────────────────────────────────────────────────
+    // Path: avatars/{userId}/{filename}
+    // - Anyone (unauthenticated too) may read avatars for display in emails etc.
+    // - Only the owner may upload; max 5 MB; images only.
+
+    match /avatars/{userId}/{allPaths=**} {
+      allow read: if true;
+      allow write: if isOwner(userId) &&
+        isFileSizeWithin(5) &&
+        isImageContentType();
+      allow delete: if isOwner(userId);
+    }
+
+    // ─── Post Media ───────────────────────────────────────────────────────────
+    // Path: posts/{userId}/{filename}
+    // - Any authenticated user may read post media.
+    // - Only the owner may upload; max 10 MB; images or videos only.
+
+    match /posts/{userId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) &&
+        isFileSizeWithin(10) &&
+        isImageOrVideoContentType();
+      allow delete: if isOwner(userId);
+    }
+
+    // ─── Project Files ────────────────────────────────────────────────────────
+    // Path: projects/{userId}/{projectId}/{filename}
+    // - Read is open to all authenticated users (project visibility is enforced
+    //   at the Firestore layer; here we trust the client has already checked).
+    // - Only the owner may upload; max 50 MB; any content type allowed.
+
+    match /projects/{userId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) &&
+        isFileSizeWithin(50);
+      allow delete: if isOwner(userId);
+    }
+
+    // ─── Stories Media ────────────────────────────────────────────────────────
+    // Path: stories/{userId}/{filename}
+    // - Any authenticated user may read stories.
+    // - Only the owner may upload; max 15 MB; images or videos only.
+
+    match /stories/{userId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId) &&
+        isFileSizeWithin(15) &&
+        isImageOrVideoContentType();
+      allow delete: if isOwner(userId);
+    }
+
+    // ─── Chat / Message Attachments ───────────────────────────────────────────
+    // Path: chat/{chatId}/{filename}
+    // - Only chat participants may read or write.
+    // - Max 25 MB per file; any content type allowed.
+    // NOTE: participants are stored as comma-separated UIDs in file metadata
+    //       under the key "participants".
+
+    match /chat/{chatId}/{allPaths=**} {
+      allow read: if isAuthenticated() && (
+        resource == null || isChatParticipant(chatId)
+      );
+      allow write: if isAuthenticated() &&
+        isChatParticipantUpload(chatId) &&
+        isFileSizeWithin(25);
+      allow delete: if isAuthenticated() && isChatParticipant(chatId);
+    }
+
+    // ─── Default deny ─────────────────────────────────────────────────────────
+    // Explicitly deny all other paths.
+
+    match /{allOtherPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

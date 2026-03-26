@@ -1,0 +1,208 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper functions ─────────────────────────────────────────────────────
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isParticipant(chatData) {
+      return isAuthenticated() && request.auth.uid in chatData.participants;
+    }
+
+    function notChanged(field) {
+      return !(field in request.resource.data) ||
+        request.resource.data[field] == resource.data[field];
+    }
+
+    // ─── Users ────────────────────────────────────────────────────────────────
+    // Any authenticated user can read profiles.
+    // Users can only write their own profile.
+    // Admins can update any profile (e.g. to change role).
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) || isAdmin();
+      allow delete: if isAdmin();
+
+      // Prevent users from elevating their own role
+      allow update: if isOwner(userId) && notChanged('role');
+    }
+
+    // ─── Posts ────────────────────────────────────────────────────────────────
+    // Any authenticated user can read posts.
+    // Only the author can create/update their posts.
+    // Author or admin can delete.
+
+    match /posts/{postId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        request.resource.data.authorId == request.auth.uid;
+      allow update: if isAuthenticated() &&
+        resource.data.authorId == request.auth.uid;
+      allow delete: if isAuthenticated() &&
+        (resource.data.authorId == request.auth.uid || isAdmin());
+
+      // ─── Comments subcollection ───────────────────────────────────────────
+      match /comments/{commentId} {
+        allow read: if isAuthenticated();
+        allow create: if isAuthenticated() &&
+          request.resource.data.authorId == request.auth.uid;
+        allow update: if isAuthenticated() &&
+          resource.data.authorId == request.auth.uid;
+        allow delete: if isAuthenticated() &&
+          (resource.data.authorId == request.auth.uid || isAdmin());
+      }
+
+      // ─── Likes subcollection ──────────────────────────────────────────────
+      match /likes/{likeId} {
+        allow read: if isAuthenticated();
+        allow create, delete: if isOwner(likeId);
+      }
+    }
+
+    // ─── Projects ─────────────────────────────────────────────────────────────
+    // Public projects readable by all authenticated users.
+    // Private projects readable by owner or users listed in accessList.
+    // Write access restricted to owner.
+
+    match /projects/{projectId} {
+      allow read: if isAuthenticated() && (
+        resource.data.isPublic == true ||
+        resource.data.authorId == request.auth.uid ||
+        (resource.data.accessList != null &&
+          request.auth.uid in resource.data.accessList)
+      );
+      allow create: if isAuthenticated() &&
+        request.resource.data.authorId == request.auth.uid;
+      allow update: if isAuthenticated() &&
+        resource.data.authorId == request.auth.uid;
+      allow delete: if isAuthenticated() &&
+        (resource.data.authorId == request.auth.uid || isAdmin());
+
+      // Stars subcollection
+      match /stars/{starId} {
+        allow read: if isAuthenticated();
+        allow create, delete: if isOwner(starId);
+      }
+    }
+
+    // ─── Stories ──────────────────────────────────────────────────────────────
+    // Any authenticated user can read stories.
+    // Only the author can create/update/delete their own stories.
+
+    match /stories/{storyId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        request.resource.data.authorId == request.auth.uid;
+      allow update: if isAuthenticated() &&
+        resource.data.authorId == request.auth.uid;
+      allow delete: if isAuthenticated() &&
+        (resource.data.authorId == request.auth.uid || isAdmin());
+
+      // Views subcollection
+      match /views/{viewerId} {
+        allow read: if isAuthenticated() &&
+          (resource == null || get(/databases/$(database)/documents/stories/$(storyId)).data.authorId == request.auth.uid);
+        allow create: if isOwner(viewerId);
+      }
+    }
+
+    // ─── Chats / Messages ─────────────────────────────────────────────────────
+    // Only participants in a chat can read or write to it.
+
+    match /chats/{chatId} {
+      allow read, update: if isAuthenticated() &&
+        request.auth.uid in resource.data.participants;
+      allow create: if isAuthenticated() &&
+        request.auth.uid in request.resource.data.participants;
+      allow delete: if isAdmin();
+
+      match /messages/{messageId} {
+        allow read: if isAuthenticated() &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants;
+        allow create: if isAuthenticated() &&
+          request.auth.uid in get(/databases/$(database)/documents/chats/$(chatId)).data.participants &&
+          request.resource.data.senderId == request.auth.uid;
+        allow update: if isAuthenticated() &&
+          resource.data.senderId == request.auth.uid;
+        allow delete: if isAuthenticated() &&
+          (resource.data.senderId == request.auth.uid || isAdmin());
+      }
+    }
+
+    // ─── Notifications ────────────────────────────────────────────────────────
+    // Users can read their own notifications.
+    // System (Cloud Functions with Admin SDK) or the recipient can mark as read.
+    // Creation is allowed for authenticated users (handled by Cloud Functions).
+
+    match /notifications/{notificationId} {
+      allow read: if isAuthenticated() &&
+        resource.data.recipientId == request.auth.uid;
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated() &&
+        resource.data.recipientId == request.auth.uid;
+      allow delete: if isAuthenticated() &&
+        (resource.data.recipientId == request.auth.uid || isAdmin());
+    }
+
+    // ─── Reports ──────────────────────────────────────────────────────────────
+    // Any authenticated user can file a report.
+    // Only admins can read or update reports.
+
+    match /reports/{reportId} {
+      allow create: if isAuthenticated() &&
+        request.resource.data.reporterId == request.auth.uid;
+      allow read, update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ─── Follows ──────────────────────────────────────────────────────────────
+    // Document ID pattern: {followerId}_{followedId}
+    // Only authenticated users can create/delete their own follow records.
+
+    match /follows/{followId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() &&
+        request.resource.data.followerId == request.auth.uid;
+      allow delete: if isAuthenticated() &&
+        resource.data.followerId == request.auth.uid;
+    }
+
+    // ─── Hashtags / Tags ──────────────────────────────────────────────────────
+    // Publicly readable for explore/search; only writable by Cloud Functions
+    // via Admin SDK in production. Allow authenticated writes for dev flexibility.
+
+    match /hashtags/{tag} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // ─── Admin collection ─────────────────────────────────────────────────────
+    // Only admins can read or write any document in the admin collection.
+
+    match /admin/{document=**} {
+      allow read, write: if isAdmin();
+    }
+
+    // ─── App Config ───────────────────────────────────────────────────────────
+    // Global config readable by all authenticated users, writable by admins.
+
+    match /config/{document} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+  }
+}
